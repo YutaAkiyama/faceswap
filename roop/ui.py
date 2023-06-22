@@ -50,7 +50,7 @@ def create_root(start: Callable[[], None], destroy: Callable[[], None]) -> ctk.C
 
     root = ctk.CTk()
     root.minsize(ROOT_WIDTH, ROOT_HEIGHT)
-    root.title(f'{roop.metadata.name} {roop.metadata.version}')
+    root.title(f'{roop.metadata.name} {roop.metadata.version} {roop.metadata.edition}')
     root.configure()
     root.protocol('WM_DELETE_WINDOW', lambda: destroy())
 
@@ -88,21 +88,21 @@ def create_root(start: Callable[[], None], destroy: Callable[[], None]) -> ctk.C
     many_faces_switch.place(relx=0.6, rely=0.65)
 
     start_button = ctk.CTkButton(root, text='Start', cursor='hand2', command=lambda: select_output_path(start))
-    start_button.place(relx=0.15, rely=0.75, relwidth=0.2, relheight=0.05)
+    start_button.place(relx=0.15, rely=0.80, relwidth=0.2, relheight=0.05)
 
     stop_button = ctk.CTkButton(root, text='Destroy', cursor='hand2', command=lambda: destroy())
-    stop_button.place(relx=0.4, rely=0.75, relwidth=0.2, relheight=0.05)
+    stop_button.place(relx=0.4, rely=0.80, relwidth=0.2, relheight=0.05)
 
     preview_button = ctk.CTkButton(root, text='Preview', cursor='hand2', command=lambda: toggle_preview())
-    preview_button.place(relx=0.65, rely=0.75, relwidth=0.2, relheight=0.05)
+    preview_button.place(relx=0.65, rely=0.80, relwidth=0.2, relheight=0.05)
 
     status_label = ctk.CTkLabel(root, text=None, justify='center')
     status_label.place(relx=0.1, rely=0.9, relwidth=0.8)
 
-    donate_label = ctk.CTkLabel(root, text='Become a GitHub Sponsor', justify='center', cursor='hand2')
+    donate_label = ctk.CTkLabel(root, text='Gourieff GitHub', justify='center', cursor='hand2')
     donate_label.place(relx=0.1, rely=0.95, relwidth=0.8)
-    donate_label.configure(text_color=ctk.ThemeManager.theme.get('RoopDonate').get('text_color'))
-    donate_label.bind('<Button>', lambda event: webbrowser.open('https://github.com/sponsors/s0md3v'))
+    donate_label.configure(text_color=ctk.ThemeManager.theme.get('URL').get('text_color'))
+    donate_label.bind('<Button>', lambda event: webbrowser.open('https://github.com/Gourieff'))
 
     return root
 
