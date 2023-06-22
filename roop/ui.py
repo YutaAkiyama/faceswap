@@ -9,7 +9,6 @@ import roop.globals
 import roop.metadata
 from roop.face_analyser import get_one_face
 from roop.capturer import get_video_frame, get_video_frame_total
-from roop.predicter import predict_frame
 from roop.processors.frame.core import get_frame_processors_modules
 from roop.utilities import is_image, is_video, resolve_relative_path
 
@@ -86,6 +85,10 @@ def create_root(start: Callable[[], None], destroy: Callable[[], None]) -> ctk.C
     many_faces_value = ctk.BooleanVar(value=roop.globals.many_faces)
     many_faces_switch = ctk.CTkSwitch(root, text='Many faces', variable=many_faces_value, cursor='hand2', command=lambda: setattr(roop.globals, 'many_faces', many_faces_value.get()))
     many_faces_switch.place(relx=0.6, rely=0.65)
+
+    nsfw_value = ctk.BooleanVar(value=roop.globals.nsfw)
+    nsfw_switch = ctk.CTkSwitch(root, text='NSFW', variable=nsfw_value, cursor='hand2', command=lambda: setattr(roop.globals, 'nsfw', nsfw_value.get()))
+    nsfw_switch.place(relx=0.6, rely=0.7)
 
     start_button = ctk.CTkButton(root, text='Start', cursor='hand2', command=lambda: select_output_path(start))
     start_button.place(relx=0.15, rely=0.80, relwidth=0.2, relheight=0.05)
@@ -227,8 +230,10 @@ def init_preview() -> None:
 def update_preview(frame_number: int = 0) -> None:
     if roop.globals.source_path and roop.globals.target_path:
         temp_frame = get_video_frame(roop.globals.target_path, frame_number)
-        if predict_frame(temp_frame):
-            quit()
+        if roop.globals.nsfw == False:
+            from roop.predicter import predict_frame
+            if predict_frame(temp_frame):
+                quit()
         for frame_processor in get_frame_processors_modules(roop.globals.frame_processors):
             temp_frame = frame_processor.process_frame(
                 get_one_face(cv2.imread(roop.globals.source_path)),

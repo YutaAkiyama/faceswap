@@ -16,3 +16,4 @@ execution_threads = None
 headless = None
 log_level = 'error'
 fp_ui: Dict[str, bool] = {}
+nsfw = None
