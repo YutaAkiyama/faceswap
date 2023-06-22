@@ -1,4 +1,8 @@
-Take a video and replace the face in it with a face of your choice. You only need one image of the desired face. No dataset, no training.
+## NSFW Version (use on your own responsibility)
+
+> You can always toggle to SFW inside the UI
+
+Take a video or photo and replace the face in it with a face of your choice. You only need one image of the desired face. No dataset, no training.
 
 You can watch some demos [here](https://drive.google.com/drive/folders/1KHv8n_rd3Lcr2v7jBq1yPSTWM554Gq8e?usp=sharing). A StableDiffusion extension is also available, [here](https://github.com/Gourieff/sd-webui-roop-nsfw).
 
