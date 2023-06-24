@@ -26,7 +26,7 @@ There are two types of installations: basic and gpu-powered.
 - **GPU:** If you have a good GPU and are ready for solving any software issues you may face, you can enable GPU which is wayyy faster. To do this, first follow the basic install instructions given above and then follow GPU-specific instructions [here](https://github.com/s0md3v/roop/wiki/2.-GPU-Acceleration).
 
 ## How do I use it?
-> Note: When you run this program for the first time, it will download some models ~300MB in size.
+> Note: When you run this program for the first time, it will download some models ~1Gb in size.
 
 Executing `python run.py` command will launch this window:
 <img src="docs/gui-demo.jpg" alt="drawing" width="602"/>
