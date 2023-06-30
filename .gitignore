@@ -13,6 +13,7 @@ __pycache__/
 *.mp4
 *.mkv
 
+.tmp/
 models/
 temp/
 venv/
