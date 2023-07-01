@@ -30,6 +30,8 @@ source_label = None
 target_label = None
 status_label = None
 
+img_ft, vid_ft = roop.globals.file_types
+
 
 def init(start: Callable[[], None], destroy: Callable[[], None]) -> ctk.CTk:
     global ROOT, PREVIEW
@@ -138,10 +140,10 @@ def update_tumbler(var: str, value: bool) -> None:
 
 
 def select_source_path() -> None:
-    global RECENT_DIRECTORY_SOURCE
+    global RECENT_DIRECTORY_SOURCE, img_ft, vid_ft
 
     PREVIEW.withdraw()
-    source_path = ctk.filedialog.askopenfilename(title='select an source image', initialdir=RECENT_DIRECTORY_SOURCE)
+    source_path = ctk.filedialog.askopenfilename(title='select an source image', initialdir=RECENT_DIRECTORY_SOURCE, filetypes=[img_ft])
     if is_image(source_path):
         roop.globals.source_path = source_path
         RECENT_DIRECTORY_SOURCE = os.path.dirname(roop.globals.source_path)
@@ -153,10 +155,10 @@ def select_source_path() -> None:
 
 
 def select_target_path() -> None:
-    global RECENT_DIRECTORY_TARGET
+    global RECENT_DIRECTORY_TARGET, img_ft, vid_ft
 
     PREVIEW.withdraw()
-    target_path = ctk.filedialog.askopenfilename(title='select an target image or video', initialdir=RECENT_DIRECTORY_TARGET)
+    target_path = ctk.filedialog.askopenfilename(title='select an target image or video', initialdir=RECENT_DIRECTORY_TARGET, filetypes=[img_ft, vid_ft])
     if is_image(target_path):
         roop.globals.target_path = target_path
         RECENT_DIRECTORY_TARGET = os.path.dirname(roop.globals.target_path)
@@ -173,12 +175,12 @@ def select_target_path() -> None:
 
 
 def select_output_path(start: Callable[[], None]) -> None:
-    global RECENT_DIRECTORY_OUTPUT
+    global RECENT_DIRECTORY_OUTPUT, img_ft, vid_ft
 
     if is_image(roop.globals.target_path):
-        output_path = ctk.filedialog.asksaveasfilename(title='save image output file', defaultextension='.png', initialfile='output.png', initialdir=RECENT_DIRECTORY_OUTPUT)
+        output_path = ctk.filedialog.asksaveasfilename(title='save image output file', filetypes=[img_ft], defaultextension='.png', initialfile='output.png', initialdir=RECENT_DIRECTORY_OUTPUT)
     elif is_video(roop.globals.target_path):
-        output_path = ctk.filedialog.asksaveasfilename(title='save video output file', defaultextension='.mp4', initialfile='output.mp4', initialdir=RECENT_DIRECTORY_OUTPUT)
+        output_path = ctk.filedialog.asksaveasfilename(title='save video output file', filetypes=[vid_ft], defaultextension='.mp4', initialfile='output.mp4', initialdir=RECENT_DIRECTORY_OUTPUT)
     else:
         output_path = None
     if output_path:
