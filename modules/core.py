@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import os
 import sys
 # single thread doubles cuda performance - needs to be set before torch import
@@ -162,7 +160,7 @@ def pre_check() -> bool:
     return True
 
 
-def update_status(message: str, scope: str = 'ROOP.CORE') -> None:
+def update_status(message: str, scope: str = 'REACTOR.CORE') -> None:
     print(f'[{scope}] {message}')
     if not modules.globals.headless:
         ui.update_status(message)

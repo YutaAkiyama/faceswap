@@ -12,7 +12,7 @@ from modules.utilities import conditional_download, resolve_relative_path, is_im
 
 FACE_SWAPPER = None
 THREAD_LOCK = threading.Lock()
-NAME = 'ROOP.FACE-SWAPPER'
+NAME = 'REACTOR.FACE-SWAPPER'
 
 
 def pre_check() -> bool:

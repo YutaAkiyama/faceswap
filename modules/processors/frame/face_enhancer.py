@@ -13,7 +13,7 @@ from modules.utilities import conditional_download, resolve_relative_path, is_im
 FACE_ENHANCER = None
 THREAD_SEMAPHORE = threading.Semaphore()
 THREAD_LOCK = threading.Lock()
-NAME = 'ROOP.FACE-ENHANCER'
+NAME = 'REACTOR.FACE-ENHANCER'
 
 
 def pre_check() -> bool:
