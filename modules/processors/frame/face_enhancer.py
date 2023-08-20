@@ -3,12 +3,12 @@ import cv2
 import threading
 import gfpgan
 
-import roop.globals
-import roop.processors.frame.core
-from roop.core import update_status
-from roop.face_analyser import get_one_face
-from roop.typing import Frame, Face
-from roop.utilities import conditional_download, resolve_relative_path, is_image, is_video
+import modules.globals
+import modules.processors.frame.core
+from modules.core import update_status
+from modules.face_analyser import get_one_face
+from modules.typing import Frame, Face
+from modules.utilities import conditional_download, resolve_relative_path, is_image, is_video
 
 FACE_ENHANCER = None
 THREAD_SEMAPHORE = threading.Semaphore()
@@ -23,7 +23,7 @@ def pre_check() -> bool:
 
 
 def pre_start() -> bool:
-    if not is_image(roop.globals.target_path) and not is_video(roop.globals.target_path):
+    if not is_image(modules.globals.target_path) and not is_video(modules.globals.target_path):
         update_status('Select an image or video for target path.', NAME)
         return False
     return True
@@ -72,4 +72,4 @@ def process_image(source_path: str, target_path: str, output_path: str) -> None:
 
 
 def process_video(source_path: str, temp_frame_paths: List[str]) -> None:
-    roop.processors.frame.core.process_video(None, temp_frame_paths, process_frames)
+    modules.processors.frame.core.process_video(None, temp_frame_paths, process_frames)

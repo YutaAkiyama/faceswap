@@ -17,13 +17,13 @@ import torch
 import onnxruntime
 import tensorflow
 
-import roop.globals
-import roop.metadata
-import roop.ui as ui
-from roop.processors.frame.core import get_frame_processors_modules
-from roop.utilities import has_image_extension, is_image, is_video, detect_fps, create_video, extract_frames, get_temp_frame_paths, restore_audio, create_temp, move_temp, clean_temp, normalize_output_path
+import modules.globals
+import modules.metadata
+import modules.ui as ui
+from modules.processors.frame.core import get_frame_processors_modules
+from modules.utilities import has_image_extension, is_image, is_video, detect_fps, create_video, extract_frames, get_temp_frame_paths, restore_audio, create_temp, move_temp, clean_temp, normalize_output_path
 
-if 'ROCMExecutionProvider' in roop.globals.execution_providers:
+if 'ROCMExecutionProvider' in modules.globals.execution_providers:
     del torch
 
 warnings.filterwarnings('ignore', category=FutureWarning, module='insightface')
@@ -46,7 +46,7 @@ def parse_args() -> None:
     program.add_argument('--max-memory', help='maximum amount of RAM in GB', dest='max_memory', type=int, default=suggest_max_memory())
     program.add_argument('--execution-provider', help='execution provider', dest='execution_provider', default=['cpu'], choices=suggest_execution_providers(), nargs='+')
     program.add_argument('--execution-threads', help='number of execution threads', dest='execution_threads', type=int, default=suggest_execution_threads())
-    program.add_argument('-v', '--version', action='version', version=f'{roop.metadata.name} {roop.metadata.version}')
+    program.add_argument('-v', '--version', action='version', version=f'{modules.metadata.name} {modules.metadata.version}')
 
     # register deprecated args
     program.add_argument('-f', '--face', help=argparse.SUPPRESS, dest='source_path_deprecated')
@@ -56,49 +56,49 @@ def parse_args() -> None:
 
     args = program.parse_args()
 
-    roop.globals.source_path = args.source_path
-    roop.globals.target_path = args.target_path
-    roop.globals.output_path = normalize_output_path(roop.globals.source_path, roop.globals.target_path, args.output_path)
-    roop.globals.frame_processors = args.frame_processor
-    roop.globals.headless = args.source_path or args.target_path or args.output_path
-    roop.globals.keep_fps = args.keep_fps
-    roop.globals.keep_audio = args.keep_audio
-    roop.globals.keep_frames = args.keep_frames
-    roop.globals.many_faces = args.many_faces
-    roop.globals.video_encoder = args.video_encoder
-    roop.globals.video_quality = args.video_quality
-    roop.globals.max_memory = args.max_memory
-    roop.globals.execution_providers = decode_execution_providers(args.execution_provider)
-    roop.globals.execution_threads = args.execution_threads
+    modules.globals.source_path = args.source_path
+    modules.globals.target_path = args.target_path
+    modules.globals.output_path = normalize_output_path(modules.globals.source_path, modules.globals.target_path, args.output_path)
+    modules.globals.frame_processors = args.frame_processor
+    modules.globals.headless = args.source_path or args.target_path or args.output_path
+    modules.globals.keep_fps = args.keep_fps
+    modules.globals.keep_audio = args.keep_audio
+    modules.globals.keep_frames = args.keep_frames
+    modules.globals.many_faces = args.many_faces
+    modules.globals.video_encoder = args.video_encoder
+    modules.globals.video_quality = args.video_quality
+    modules.globals.max_memory = args.max_memory
+    modules.globals.execution_providers = decode_execution_providers(args.execution_provider)
+    modules.globals.execution_threads = args.execution_threads
 
     #for ENHANCER tumbler:
     if 'face_enhancer' in args.frame_processor:
-        roop.globals.fp_ui['face_enhancer'] = True
+        modules.globals.fp_ui['face_enhancer'] = True
     else:
-        roop.globals.fp_ui['face_enhancer'] = False
+        modules.globals.fp_ui['face_enhancer'] = False
     
-    roop.globals.nsfw = False
+    modules.globals.nsfw = False
 
     # translate deprecated args
     if args.source_path_deprecated:
         print('\033[33mArgument -f and --face are deprecated. Use -s and --source instead.\033[0m')
-        roop.globals.source_path = args.source_path_deprecated
-        roop.globals.output_path = normalize_output_path(args.source_path_deprecated, roop.globals.target_path, args.output_path)
+        modules.globals.source_path = args.source_path_deprecated
+        modules.globals.output_path = normalize_output_path(args.source_path_deprecated, modules.globals.target_path, args.output_path)
     if args.cpu_cores_deprecated:
         print('\033[33mArgument --cpu-cores is deprecated. Use --execution-threads instead.\033[0m')
-        roop.globals.execution_threads = args.cpu_cores_deprecated
+        modules.globals.execution_threads = args.cpu_cores_deprecated
     if args.gpu_vendor_deprecated == 'apple':
         print('\033[33mArgument --gpu-vendor apple is deprecated. Use --execution-provider coreml instead.\033[0m')
-        roop.globals.execution_providers = decode_execution_providers(['coreml'])
+        modules.globals.execution_providers = decode_execution_providers(['coreml'])
     if args.gpu_vendor_deprecated == 'nvidia':
         print('\033[33mArgument --gpu-vendor nvidia is deprecated. Use --execution-provider cuda instead.\033[0m')
-        roop.globals.execution_providers = decode_execution_providers(['cuda'])
+        modules.globals.execution_providers = decode_execution_providers(['cuda'])
     if args.gpu_vendor_deprecated == 'amd':
         print('\033[33mArgument --gpu-vendor amd is deprecated. Use --execution-provider cuda instead.\033[0m')
-        roop.globals.execution_providers = decode_execution_providers(['rocm'])
+        modules.globals.execution_providers = decode_execution_providers(['rocm'])
     if args.gpu_threads_deprecated:
         print('\033[33mArgument --gpu-threads is deprecated. Use --execution-threads instead.\033[0m')
-        roop.globals.execution_threads = args.gpu_threads_deprecated
+        modules.globals.execution_threads = args.gpu_threads_deprecated
 
 
 def encode_execution_providers(execution_providers: List[str]) -> List[str]:
@@ -121,9 +121,9 @@ def suggest_execution_providers() -> List[str]:
 
 
 def suggest_execution_threads() -> int:
-    if 'DmlExecutionProvider' in roop.globals.execution_providers:
+    if 'DmlExecutionProvider' in modules.globals.execution_providers:
         return 1
-    if 'ROCMExecutionProvider' in roop.globals.execution_providers:
+    if 'ROCMExecutionProvider' in modules.globals.execution_providers:
         return 1
     return 8
 
@@ -134,10 +134,10 @@ def limit_resources() -> None:
     for gpu in gpus:
         tensorflow.config.experimental.set_memory_growth(gpu, True)
     # limit memory usage
-    if roop.globals.max_memory:
-        memory = roop.globals.max_memory * 1024 ** 3
+    if modules.globals.max_memory:
+        memory = modules.globals.max_memory * 1024 ** 3
         if platform.system().lower() == 'darwin':
-            memory = roop.globals.max_memory * 1024 ** 6
+            memory = modules.globals.max_memory * 1024 ** 6
         if platform.system().lower() == 'windows':
             import ctypes
             kernel32 = ctypes.windll.kernel32
@@ -148,7 +148,7 @@ def limit_resources() -> None:
 
 
 def release_resources() -> None:
-    if 'CUDAExecutionProvider' in roop.globals.execution_providers:
+    if 'CUDAExecutionProvider' in modules.globals.execution_providers:
         torch.cuda.empty_cache()
 
 
@@ -164,73 +164,73 @@ def pre_check() -> bool:
 
 def update_status(message: str, scope: str = 'ROOP.CORE') -> None:
     print(f'[{scope}] {message}')
-    if not roop.globals.headless:
+    if not modules.globals.headless:
         ui.update_status(message)
 
 
 def start() -> None:
-    for frame_processor in get_frame_processors_modules(roop.globals.frame_processors):
+    for frame_processor in get_frame_processors_modules(modules.globals.frame_processors):
         if not frame_processor.pre_start():
             return
     # process image to image
-    if has_image_extension(roop.globals.target_path):
-        if roop.globals.nsfw == False:
-            from roop.predicter import predict_image
-            if predict_image(roop.globals.target_path):
+    if has_image_extension(modules.globals.target_path):
+        if modules.globals.nsfw == False:
+            from modules.predicter import predict_image
+            if predict_image(modules.globals.target_path):
                 destroy()
-        shutil.copy2(roop.globals.target_path, roop.globals.output_path)
-        for frame_processor in get_frame_processors_modules(roop.globals.frame_processors):
+        shutil.copy2(modules.globals.target_path, modules.globals.output_path)
+        for frame_processor in get_frame_processors_modules(modules.globals.frame_processors):
             update_status('Progressing...', frame_processor.NAME)
-            frame_processor.process_image(roop.globals.source_path, roop.globals.output_path, roop.globals.output_path)
+            frame_processor.process_image(modules.globals.source_path, modules.globals.output_path, modules.globals.output_path)
             release_resources()
-        if is_image(roop.globals.target_path):
+        if is_image(modules.globals.target_path):
             update_status('Processing to image succeed!')
         else:
             update_status('Processing to image failed!')
         return
     # process image to videos
-    if roop.globals.nsfw == False:
-        from roop.predicter import predict_video
-        if predict_video(roop.globals.target_path):
+    if modules.globals.nsfw == False:
+        from modules.predicter import predict_video
+        if predict_video(modules.globals.target_path):
             destroy()
     update_status('Creating temp resources...')
-    create_temp(roop.globals.target_path)
+    create_temp(modules.globals.target_path)
     update_status('Extracting frames...')
-    extract_frames(roop.globals.target_path)
-    temp_frame_paths = get_temp_frame_paths(roop.globals.target_path)
-    for frame_processor in get_frame_processors_modules(roop.globals.frame_processors):
+    extract_frames(modules.globals.target_path)
+    temp_frame_paths = get_temp_frame_paths(modules.globals.target_path)
+    for frame_processor in get_frame_processors_modules(modules.globals.frame_processors):
         update_status('Progressing...', frame_processor.NAME)
-        frame_processor.process_video(roop.globals.source_path, temp_frame_paths)
+        frame_processor.process_video(modules.globals.source_path, temp_frame_paths)
         release_resources()
     # handles fps
-    if roop.globals.keep_fps:
+    if modules.globals.keep_fps:
         update_status('Detecting fps...')
-        fps = detect_fps(roop.globals.target_path)
+        fps = detect_fps(modules.globals.target_path)
         update_status(f'Creating video with {fps} fps...')
-        create_video(roop.globals.target_path, fps)
+        create_video(modules.globals.target_path, fps)
     else:
         update_status('Creating video with 30.0 fps...')
-        create_video(roop.globals.target_path)
+        create_video(modules.globals.target_path)
     # handle audio
-    if roop.globals.keep_audio:
-        if roop.globals.keep_fps:
+    if modules.globals.keep_audio:
+        if modules.globals.keep_fps:
             update_status('Restoring audio...')
         else:
             update_status('Restoring audio might cause issues as fps are not kept...')
-        restore_audio(roop.globals.target_path, roop.globals.output_path)
+        restore_audio(modules.globals.target_path, modules.globals.output_path)
     else:
-        move_temp(roop.globals.target_path, roop.globals.output_path)
+        move_temp(modules.globals.target_path, modules.globals.output_path)
     # clean and validate
-    clean_temp(roop.globals.target_path)
-    if is_video(roop.globals.target_path):
+    clean_temp(modules.globals.target_path)
+    if is_video(modules.globals.target_path):
         update_status('Processing to video succeed!')
     else:
         update_status('Processing to video failed!')
 
 
 def destroy() -> None:
-    if roop.globals.target_path:
-        clean_temp(roop.globals.target_path)
+    if modules.globals.target_path:
+        clean_temp(modules.globals.target_path)
     quit()
 
 
@@ -238,11 +238,11 @@ def run() -> None:
     parse_args()
     if not pre_check():
         return
-    for frame_processor in get_frame_processors_modules(roop.globals.frame_processors):
+    for frame_processor in get_frame_processors_modules(modules.globals.frame_processors):
         if not frame_processor.pre_check():
             return
     limit_resources()
-    if roop.globals.headless:
+    if modules.globals.headless:
         start()
     else:
         window = ui.init(start, destroy)

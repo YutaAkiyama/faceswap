@@ -1,11 +1,11 @@
-# Roop GE (Gourieff Edition) 1.0.2
+# ReActor 1.0.3 Portable
 ## NSFW (uncensored) version (use on your own responsibility) of [original roop](https://github.com/s0md3v/roop) with different improvements
 
 > You can always toggle to SFW inside the UI
 
 Take a video or photo and replace the face in it with a face of your choice. You only need one image of the desired face. No dataset, no training.
 
-You can watch some demos [here](https://drive.google.com/drive/folders/1KHv8n_rd3Lcr2v7jBq1yPSTWM554Gq8e?usp=sharing). A StableDiffusion extension is also available, [here](https://github.com/Gourieff/sd-webui-roop-nsfw).
+You can watch some demos [here](https://drive.google.com/drive/folders/1KHv8n_rd3Lcr2v7jBq1yPSTWM554Gq8e?usp=sharing). A StableDiffusion extension is also available, [here](https://github.com/Gourieff/sd-webui-reactor).
 
 ![demo-gif](docs/demo.gif)
 
@@ -67,7 +67,7 @@ options:
 Looking for a CLI mode? Using the -s/--source argument will make the run program in cli mode.
 
 ## Credits
-- [henryruhs](https://github.com/henryruhs): for being an irreplaceable contributor to the project
+- [henryruhs](https://github.com/henryruhs): for being the most active contributor to the first roop project
 - [ffmpeg](https://ffmpeg.org/): for making video related operations easy
 - [deepinsight](https://github.com/deepinsight): for their [insightface](https://github.com/deepinsight/insightface) project which provided a well-made library and models.
 - and all developers behind libraries used in this project.

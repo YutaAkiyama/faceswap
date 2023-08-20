@@ -3,12 +3,12 @@ import cv2
 import insightface
 import threading
 
-import roop.globals
-import roop.processors.frame.core
-from roop.core import update_status
-from roop.face_analyser import get_one_face, get_many_faces
-from roop.typing import Face, Frame
-from roop.utilities import conditional_download, resolve_relative_path, is_image, is_video
+import modules.globals
+import modules.processors.frame.core
+from modules.core import update_status
+from modules.face_analyser import get_one_face, get_many_faces
+from modules.typing import Face, Frame
+from modules.utilities import conditional_download, resolve_relative_path, is_image, is_video
 
 FACE_SWAPPER = None
 THREAD_LOCK = threading.Lock()
@@ -22,13 +22,13 @@ def pre_check() -> bool:
 
 
 def pre_start() -> bool:
-    if not is_image(roop.globals.source_path):
+    if not is_image(modules.globals.source_path):
         update_status('Select an image for source path.', NAME)
         return False
-    elif not get_one_face(cv2.imread(roop.globals.source_path)):
+    elif not get_one_face(cv2.imread(modules.globals.source_path)):
         update_status('No face in source path detected.', NAME)
         return False
-    if not is_image(roop.globals.target_path) and not is_video(roop.globals.target_path):
+    if not is_image(modules.globals.target_path) and not is_video(modules.globals.target_path):
         update_status('Select an image or video for target path.', NAME)
         return False
     return True
@@ -40,7 +40,7 @@ def get_face_swapper() -> Any:
     with THREAD_LOCK:
         if FACE_SWAPPER is None:
             model_path = resolve_relative_path('../models/inswapper_128.onnx')
-            FACE_SWAPPER = insightface.model_zoo.get_model(model_path, providers=roop.globals.execution_providers)
+            FACE_SWAPPER = insightface.model_zoo.get_model(model_path, providers=modules.globals.execution_providers)
     return FACE_SWAPPER
 
 
@@ -49,7 +49,7 @@ def swap_face(source_face: Face, target_face: Face, temp_frame: Frame) -> Frame:
 
 
 def process_frame(source_face: Face, temp_frame: Frame) -> Frame:
-    if roop.globals.many_faces:
+    if modules.globals.many_faces:
         many_faces = get_many_faces(temp_frame)
         if many_faces:
             for target_face in many_faces:
@@ -83,4 +83,4 @@ def process_image(source_path: str, target_path: str, output_path: str) -> None:
 
 
 def process_video(source_path: str, temp_frame_paths: List[str]) -> None:
-    roop.processors.frame.core.process_video(source_path, temp_frame_paths, process_frames)
+    modules.processors.frame.core.process_video(source_path, temp_frame_paths, process_frames)
