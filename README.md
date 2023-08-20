@@ -1,11 +1,12 @@
-# Roop GE (Gourieff Edition) 1.0.2
-## NSFW (uncensored) version (use on your own responsibility) of [original roop](https://github.com/s0md3v/roop) with different improvements
+# ReActor 1.0.3 Portable
+### The Fast and Simple "roop-based*" FaceSwap application with a lot of improvements and with no forced NSFW** filter (uncensored, use it on your own responsibility)
 
-> You can always toggle to SFW inside the UI
+> *[original roop](https://github.com/s0md3v/roop) is discontinued<br>
+> **You can always toggle to SFW inside the UI
 
 Take a video or photo and replace the face in it with a face of your choice. You only need one image of the desired face. No dataset, no training.
 
-You can watch some demos [here](https://drive.google.com/drive/folders/1KHv8n_rd3Lcr2v7jBq1yPSTWM554Gq8e?usp=sharing). A StableDiffusion extension is also available, [here](https://github.com/Gourieff/sd-webui-roop-nsfw).
+You can watch some demos [here](https://drive.google.com/drive/folders/1KHv8n_rd3Lcr2v7jBq1yPSTWM554Gq8e?usp=sharing). A StableDiffusion extension is also available, [here](https://github.com/Gourieff/sd-webui-reactor).
 
 ![demo-gif](docs/demo.gif)
 
@@ -14,7 +15,7 @@ This software is meant to be a productive contribution to the rapidly growing AI
 
 The developers of this software are aware of its possible unethical applicaitons and are committed to take preventative measures against them. It has a built-in check which prevents the program from working on inappropriate media including but not limited to nudity, graphic content, sensitive material such as war footage etc. We will continue to develop this project in the positive direction while adhering to law and ethics.
 
-Users of this software are expected to use this software responsibly while abiding the local law. If face of a real person is being used, users are suggested to get consent from the concerned person and clearly mention that it is a deepfake when posting content online. **Developers and Contributors of this software will not be responsible for actions of end-users.**
+Users of this software are expected to use this software responsibly while abiding the local law. If face of a real person is being used, users are suggested to get consent from the concerned person and clearly mention that it is a deepfake when posting content online. **Developers and Contributors of this software are not responsible for actions of end-users.**
 
 ## How do I install it?
 
@@ -67,7 +68,7 @@ options:
 Looking for a CLI mode? Using the -s/--source argument will make the run program in cli mode.
 
 ## Credits
-- [henryruhs](https://github.com/henryruhs): for being an irreplaceable contributor to the project
+- [henryruhs](https://github.com/henryruhs): for being the most active contributor to the first roop project
 - [ffmpeg](https://ffmpeg.org/): for making video related operations easy
 - [deepinsight](https://github.com/deepinsight): for their [insightface](https://github.com/deepinsight/insightface) project which provided a well-made library and models.
 - and all developers behind libraries used in this project.
