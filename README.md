@@ -1,7 +1,8 @@
 # ReActor 1.0.3 Portable
-## NSFW (uncensored) version (use on your own responsibility) of [original roop](https://github.com/s0md3v/roop) with different improvements
+### The Fast and Simple "roop-based*" FaceSwap application with a lot of improvements and with no forced NSFW** filter (uncensored, use it on your own responsibility)
 
-> You can always toggle to SFW inside the UI
+> *[original roop](https://github.com/s0md3v/roop) is discontinued<br>
+> **You can always toggle to SFW inside the UI
 
 Take a video or photo and replace the face in it with a face of your choice. You only need one image of the desired face. No dataset, no training.
 
