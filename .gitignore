@@ -19,3 +19,5 @@ temp/
 venv/
 workflow/
 gfpgan/
+
+**/.DS_Store
